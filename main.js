@@ -1,4 +1,4 @@
-var { Plugin, Notice } = require('obsidian');
+const { Plugin, Notice } = require('obsidian');
 
 module.exports = class MarkAndLinkPlugin extends Plugin {
     async onload() {
@@ -9,7 +9,7 @@ module.exports = class MarkAndLinkPlugin extends Plugin {
                 let selectedText = editor.getSelection();
                 let rangeToReplace = null;
 
-                // 1. Se non c'è testo evidenziato, prende la parola sotto il cursore
+                // 1. Se non c'è selezione, individua la parola sotto il cursore
                 if (!selectedText || selectedText.length === 0) {
                     const cursor = editor.getCursor();
                     const wordRange = editor.wordAt(cursor);
@@ -19,48 +19,59 @@ module.exports = class MarkAndLinkPlugin extends Plugin {
                     }
                 }
 
+                // Guard Clause: Selezione vuota o composta solo da spazi
                 if (!selectedText || selectedText.trim().length === 0) return;
 
-                // Evita di doppi-avvolgere se è già un link [[...]]
-                if (selectedText.startsWith('[[') && selectedText.endsWith(']]')) {
+                // Guard Clause: Evita doppi link se è già racchiuso in [[...]]
+                const trimmedSelection = selectedText.trim();
+                if (trimmedSelection.startsWith('[[') && trimmedSelection.endsWith(']]')) {
                     return;
                 }
 
-                // 2. Pulizia approfondita: Markdown e caratteri vietati dai filesystem
-                let cleanName = selectedText
-                    .replace(/[\r\n]+/g, ' ')             // Rimuove newlines
-                    .replace(/[*_~`]/g, '')               // Rimuove grassetto/corsivo/code
-                    .replace(/[\[\]#^|]/g, '')            // Rimuove sintassi wiki/tag
-                    .replace(/[\/\\?%*:|"<>]/g, '')       // Rimuove caratteri vietati nei file OS
+                // 2. Generazione del NOME PULITO per la nota (Safe File Name)
+                const cleanName = selectedText
+                    .replace(/[\r\n]+/g, ' ')            // Converte le andate a capo in spazi singoli
+                    .replace(/[*_~`]/g, '')              // Rimuove sintassi Markdown (grassetto, corsivo, code)
+                    .replace(/[\[\]#^|]/g, '')           // Rimuove sintassi Wiki/tag di Obsidian
+                    .replace(/[\/\\?%*:|"<>]/g, '')      // Rimuove caratteri vietati nei file OS
+                    .replace(/\s+/g, ' ')                // Normalizza spazi multipli
                     .trim();
 
+                // Se il nome pulito è vuoto (es. erano solo caratteri speciali), interrompe
                 if (cleanName.length === 0) return;
 
-                // 3. Trasforma il testo nell'editor in [[Nome]]
+                // 3. Sostituzione nell'editor (Preserva il testo visivo tramite Alias se necessario)
+                const replacementText = (cleanName === selectedText)
+                    ? `[[${cleanName}]]`
+                    : `[[${cleanName}|${selectedText}]]`;
+
                 if (rangeToReplace) {
-                    editor.replaceRange(`[[${cleanName}]]`, rangeToReplace.from, rangeToReplace.to);
+                    editor.replaceRange(replacementText, rangeToReplace.from, rangeToReplace.to);
                 } else {
-                    editor.replaceSelection(`[[${cleanName}]]`);
+                    editor.replaceSelection(replacementText);
                 }
 
-                // 4. Gestione della creazione file rispettando la cartella di default di Obsidian
+                // 4. Creazione sicura della nota nel Vault
                 try {
-                    // Cerca se esiste già un file con quel nome in tutto il Vault
+                    // Controlla l'esistenza della nota senza distinzione di percorso
                     const existingFile = this.app.metadataCache.getFirstLinkpathDest(cleanName, '');
-                    
+
                     if (!existingFile) {
-                        // Ricava il percorso corretto basato sulle impostazioni di Obsidian (New file location)
+                        // Ottiene la cartella di destinazione impostata nelle opzioni di Obsidian
                         const currentFilePath = view.file ? view.file.path : '';
-                        const targetFolderPath = this.app.fileManager.getNewFileParent(currentFilePath).path;
+                        const targetFolder = this.app.fileManager.getNewFileParent(currentFilePath);
                         
-                        // Genera il percorso completo
-                        const fullPath = targetFolderPath === '/' ? `${cleanName}.md` : `${targetFolderPath}/${cleanName}.md`;
-                        
+                        // Genera un percorso normalizzato privo di doppi slash
+                        const fullPath = targetFolder.isRoot()
+                            ? `${cleanName}.md`
+                            : `${targetFolder.path}/${cleanName}.md`;
+
+                        // Crea la nota vuota in background
                         await this.app.vault.create(fullPath, '');
-                        new Notice(`Nota "${cleanName}" creata in background!`);
+                        new Notice(`Nota "${cleanName}" creata.`);
                     }
                 } catch (error) {
-                    console.error("Errore durante la creazione del file:", error);
+                    console.error("[MarkAndLink] Errore durante la creazione del file:", error);
                     new Notice(`Errore nella creazione della nota "${cleanName}"`);
                 }
             },
