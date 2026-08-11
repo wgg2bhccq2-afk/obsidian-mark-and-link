@@ -1,6 +1,6 @@
 {
   "id": "mark-and-link",
-  "name": "Mark & Link",
+  "name": "Mark e Link",
   "version": "1.0.0",
   "minAppVersion": "0.15.0",
   "description": "Evidenzia visivamente il testo e lo trasforma in un link cliccabile con Cmd+Shift+E.",
