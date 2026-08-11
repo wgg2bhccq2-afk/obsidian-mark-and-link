@@ -1,4 +1,4 @@
-# 🔗 Obsidian Mark & Link
+# 🔗 Obsidian Mark e Link
 
 > **Effortlessly convert selected text or words into Obsidian internal links with a single shortcut.**
 
