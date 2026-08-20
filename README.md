@@ -6,7 +6,7 @@
 
 ## 🚀 Overview
 
-**Mark & Link** is a lightweight, zero-bloat plugin for Obsidian designed to speed up your note-taking workflow. No more typing manual double brackets `[[ ]]` or messing with unnecessary markdown syntax.
+**Mark e Link** is a lightweight, zero-bloat plugin for Obsidian designed to speed up your note-taking workflow. No more typing manual double brackets `[[ ]]` or messing with unnecessary markdown syntax.
 
 Select text, hit a hotkey, and you're done!
 
