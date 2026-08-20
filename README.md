@@ -39,7 +39,7 @@ Since this plugin is in early release, you can install it manually in 3 simple s
 2. Go to your vault's plugin directory:
    `.obsidian/plugins/`
 3. Create a new folder named `mark-and-link` and paste both files inside.
-4. Reload **Community Plugins** in Obsidian settings and turn on **Mark & Link**.
+4. Reload **Community Plugins** in Obsidian settings and turn on **Mark e Link**.
 
 ---
 
