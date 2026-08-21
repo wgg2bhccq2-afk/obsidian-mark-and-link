@@ -1,38 +1,47 @@
 # 🚀 Obsidian Mark e Link
 
-> **Effortlessly convert selected text or words into clean Obsidian internal links with a single shortcut.**
-
-`Mark e Link` is a lightweight Obsidian plugin designed to streamline your note-taking workflow. It lets you instantly highlight text and transform it into clickable internal links (`[[link]]`) without breaking your typing momentum.
+> **Effortlessly convert selected text or words into Obsidian internal links with a single shortcut.**
 
 ---
 
-## ✨ Features
+## 🔍 Overview
 
-* **Instant Link Conversion:** Convert any selected text or word under the cursor into an internal link.
-* **Backward Word Expansion:** Quickly expand text selection word-by-word backward using `Cmd + Alt + 1..9` (macOS) or `Ctrl + Alt + 1..9` (Windows/Linux).
-* **Smart Punctuation Handling:** Trailing punctuation (dots, commas, quotes) is automatically excluded from generated links.
-* **Minimal & Fast:** Zero lag, clean markup, and designed for keyboard-driven workflows.
+**Mark e Link** is a lightweight, zero-bloat plugin for Obsidian designed to speed up your note-taking workflow. No more typing manual double brackets `[[ ]]` or messing with unnecessary markdown syntax.
+
+Select text, hit a hotkey, and you're done!
+
+---
+
+## ✨ Key Features
+
+* **Instant Link Conversion:** Turn any selected text into a clean internal link `[[text]]`.
+* **Smart Word Targeting:** If nothing is selected, it automatically targets the single word under your cursor.
+* **Clean & Minimal:** Pure functionality without adding extra unwanted markdown tags (like `==` highlights).
+* **Supercharged Speed:** Designed for heavy keyboard-driven workflows.
 
 ---
 
 ## ⌨️ How to Use
 
-1. Place your cursor on a word or select a phrase.
-2. Press `Cmd + Shift + E` (or `Ctrl + Shift + E`) to convert it into an internal link (`[[text]]`).
-3. Use `Cmd + Alt + 1..9` (or `Ctrl + Alt + 1..9`) to expand your selection backward by N words before linking.
+1. Place your cursor inside a word **OR** select a block of text.
+2. Press `Cmd + Shift + E` (Mac) or `Ctrl + Shift + E` (Windows/Linux).
+3. Your text instantly turns into `[[your text]]`!
+
+*(Note: You can easily customize this keybinding in Obsidian Settings -> Hotkeys).*
 
 ---
 
-## 📥 Installation
+## 🛠️ Manual Installation
 
-### From Obsidian Community Plugins
-1. Open **Obsidian Settings** $\rightarrow$ **Community Plugins**.
-2. Turn off *Restricted Mode*.
-3. Click **Browse** and search for `Mark e Link`.
-4. Click **Install**, then **Enable**.
+Since this plugin is in early release, you can install it manually in 3 simple steps:
+
+1. Download `main.js` and `manifest.json` from this repository.
+2. Go to your vault's plugin directory: `.obsidian/plugins/`
+3. Create a new folder named `mark-and-link` and paste both files inside.
+4. Reload **Community Plugins** in Obsidian settings and turn on **Mark e Link**.
 
 ---
 
-## 💡 Feedback & Support
+## ☕ Support My Work
 
-Found a bug or have a feature request? Feel free to open an issue or start a discussion on the [GitHub Repository](https://github.com/wgg2bhccq2-afk/obsidian-mark-and-link).
+If this plugin saves you time and improves your daily workflow, consider leaving a ⭐ on GitHub!
